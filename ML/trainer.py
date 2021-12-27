@@ -85,7 +85,14 @@ def Trainer_all(config, train_x, train_y, test_x):
         model = Models.ml_logistic()
     elif model_name == 'lgb':
         model = Models.ml_lightgbm()
-
+        
+    # Calibration model 추가
+    # from sklearn.calibration import CalibratedClassifierCV
+    # calibrator = CalibratedClassifierCV(model.best_estimator_, cv='prefit')
+    # clf = calibrator.fit(train_x, train_y)
+    # train_prob_cal = clf.predict_proba(train_x)[:,1]
+    # test_prob_cal = clf.predict_proba(test_x)[:,1]
+    
     probs = model.predict_proba(np.array(test_x)[:, 2:])[:, 1]
     preds, _ = pred_to_binary(y_np[:2], probs, threshold=cutoff)
 
